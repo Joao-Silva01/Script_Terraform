@@ -1,12 +1,12 @@
-# Configuração de Infraestrutura na Azure usando Terraform
+# Configuração de Infraestrutura na Azure
 
-Nesse repositório tem arquivos  **terraforms**  para configurar uma infraestrutura básica na Azure, que  inclui um conjunto de recursos, redes, uma máquina virtual Linux  e um script que  instala o docker e docker-compose e faz  upload  de  três  arquivos com a máquina virtual.  Sendo eles: o  docker-compose.yml, Dockerfile e  index.html .
+Nesse repositório tem um arquivo **terraform** que configura uma infraestrutura básica na Azure, que  inclui um conjunto de recursos, redes, uma máquina virtual Linux  e um script que  instala o docker e docker-compose e faz  upload  de  três  arquivos junto com a máquina virtual.  Sendo eles: o  docker-compose.yml, Dockerfile e  index.html .
 
 
-## Pré-requisitos
+## Requisitos
 
--   Conta na [Azure](https://azure.microsoft.com/en-us/free/search/?ef_id=_k_CjwKCAjwzIK1BhAuEiwAHQmU3lENXx33EijviMW_isbuMq7kpPgJAgHituM5vTSp54Q2Ej408UYNPhoCXIUQAvD_BwE_k_&OCID=AIDcmmzmnb0182_SEM__k_CjwKCAjwzIK1BhAuEiwAHQmU3lENXx33EijviMW_isbuMq7kpPgJAgHituM5vTSp54Q2Ej408UYNPhoCXIUQAvD_BwE_k_&gad_source=1&gclid=CjwKCAjwzIK1BhAuEiwAHQmU3lENXx33EijviMW_isbuMq7kpPgJAgHituM5vTSp54Q2Ej408UYNPhoCXIUQAvD_BwE) com as credenciais configuradas localmente.
--   Terraform instalado localmente. [Instalação do Terraform](https://developer.hashicorp.com/terraform/install).
+-   Uma conta na [Azure](https://azure.microsoft.com/en-us/free/search/?ef_id=_k_CjwKCAjwzIK1BhAuEiwAHQmU3lENXx33EijviMW_isbuMq7kpPgJAgHituM5vTSp54Q2Ej408UYNPhoCXIUQAvD_BwE_k_&OCID=AIDcmmzmnb0182_SEM__k_CjwKCAjwzIK1BhAuEiwAHQmU3lENXx33EijviMW_isbuMq7kpPgJAgHituM5vTSp54Q2Ej408UYNPhoCXIUQAvD_BwE_k_&gad_source=1&gclid=CjwKCAjwzIK1BhAuEiwAHQmU3lENXx33EijviMW_isbuMq7kpPgJAgHituM5vTSp54Q2Ej408UYNPhoCXIUQAvD_BwE) com as credenciais configuradas localmente.
+-   Ter o terraform instalado localmente. [Terraform install](https://developer.hashicorp.com/terraform/install).
 
 
 ##  Passo a Passo
@@ -25,18 +25,19 @@ Nesse repositório tem arquivos  **terraforms**  para configurar uma infraestrut
 
 	`terraform plan`
 
-- Aplique o script terraform
+- Aplicação do script terraform
 
   `terraform apply`
 
 - Confirme o Apply
 
-   Digite `yes` para confirmar as mudanças.
+  Verifique se as mudanças estão de acordo, caso sim digite `yes` para confirmar as mudanças.
 
 - Endereço público da máquina virtual
-  Após a aplicação ser concluída, você poderá ter o acesso a máquina virtual utilizando o endereço IP público fornecido na saída.
+  
+  Após o apply ser concluído, você poderá ter o acesso a máquina virtual usando o endereço IP público que será fornecido no final da saída .
   
 ##  Destruição da aplicação
-Caso queira evitar cobranças na sua conta Azure, remova todos os recursos provisionados quando não tiver mais uso:
+Caso queira evitar cobranças na sua conta da Azure, remova todos os recursos provisionados pelo script quando não tiver mais uso, utilizando o comando:
 
 `terraform destroy`
