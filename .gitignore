@@ -34,7 +34,6 @@ override.tf.json
 terraform.rc
 
 # ignore
+.terraform.lock.hcl
 var.tf
 arquivos
-script.sh
-.terraform.lock.hcl

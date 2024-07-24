@@ -16,13 +16,13 @@ provider "azurerm" {
 
 # Cria um grupo de recursos
 resource "azurerm_resource_group" "rg01" {
-  name     = var.rg_name
-  location = env.azure_region
+  name     = var.rg_name // Troque a variável pelo nome a sua escolha
+  location = var.azure_region // Troque a variável pela região a sua escolha 
 }
 
 # Criando um endereço de IP público
 resource "azurerm_public_ip" "pub-ip01" {
-  name                = var.public_ip_name
+  name                = var.public_ip_name // Troque a variável pelo nome a sua escolha
   resource_group_name = azurerm_resource_group.rg01.name
   location            = azurerm_resource_group.rg01.location
   allocation_method   = "Static"
@@ -30,23 +30,23 @@ resource "azurerm_public_ip" "pub-ip01" {
 
 # Criando uma rede virtual
 resource "azurerm_virtual_network" "vnet01" {
-  name                = var.vnet_name
-  address_space       = var.address_vnet
+  name                = var.vnet_name // Troque a variável pelo nome a sua escolha
+  address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.rg01.location
   resource_group_name = azurerm_resource_group.rg01.name
 }
 
 # Criando uma sub-rede dentro da vnet01
 resource "azurerm_subnet" "subnet01" {
-  name                 = var.subnet_name
+  name                 = var.subnet_name // Troque a variável pelo nome a sua escolha
   resource_group_name  = azurerm_resource_group.rg01.name
   virtual_network_name = azurerm_virtual_network.vnet01.name
-  address_prefixes     = var.address_subnet
+  address_prefixes     = ["10.0.8.0/24"]
 }
 
 # Cria um grupo de segurança de rede permitindo SSH
 resource "azurerm_network_security_group" "nsg01" {
-  name                = var.nsg_name
+  name                = var.nsg_name // Troque a variável pelo nome a sua escolha
   location            = azurerm_resource_group.rg01.location
   resource_group_name = azurerm_resource_group.rg01.name
 
@@ -71,7 +71,7 @@ resource "azurerm_subnet_network_security_group_association" "subnsg01" {
 
 # Cria uma interface de rede que fica ligada à sub-rede e ao IP público
 resource "azurerm_network_interface" "nic01" {
-  name                = var.nic_name
+  name                = var.nic_name // Troque a variável pelo nome a sua escolha
   location            = azurerm_resource_group.rg01.location
   resource_group_name = azurerm_resource_group.rg01.name
 
@@ -85,18 +85,18 @@ resource "azurerm_network_interface" "nic01" {
 
 # Cria uma máquina virtual Linux com uma chave SSH pública, disco do sistema operacional padrão e imagem Ubuntu
 resource "azurerm_linux_virtual_machine" "vm01" {
-  name                = var.vm_name
+  name                = var.vm_name // Troque a variável pelo nome a sua escolha
   resource_group_name = azurerm_resource_group.rg01.name
   location            = azurerm_resource_group.rg01.location
-  size                = var.size_vm
-  admin_username      = var.name_user
+  size                = "Standard_F2"
+  admin_username      = "user_admin" 
   network_interface_ids = [
     azurerm_network_interface.nic01.id,
   ]
 
   admin_ssh_key {
-    username = var.name_user
-    public_key = file("arquivos/id_rsa.pub")
+    username ="user_admin"
+    public_key = file("arquivos/id_rsa.pub") // Troque esse caminho da chave ssh, pelo seu própio caminho
   }
 
   os_disk {
@@ -114,10 +114,10 @@ resource "azurerm_linux_virtual_machine" "vm01" {
 
 # Adiciona uma extensão à máquina virtual para execução do script
 resource "azurerm_virtual_machine_extension" "vm_ext" {
-  name                 = var.name_ext
+  name                 = var.name_ext // Troque a variável pelo nome a sua escolha
   virtual_machine_id   = azurerm_linux_virtual_machine.vm01.id
-  publisher            = var.pub_ext
-  type                 = var.type_ext
+  publisher            = "Microsoft.Azure.Extensions"
+  type                 = "CustomScript"
   type_handler_version = "2.1"
   
   settings = <<SETTINGS
@@ -125,6 +125,11 @@ resource "azurerm_virtual_machine_extension" "vm_ext" {
       "script": "${filebase64("${path.module}/script.sh")}"
     }
   SETTINGS
+}
+
+# Mostra o Ip público na sáida
+output "public_ip_address" {
+  value = azurerm_public_ip.pub-ip01.ip_address
 }
 
 
