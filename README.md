@@ -41,3 +41,6 @@ Nesse repositório tem um arquivo **terraform** que configura uma infraestrutura
 Caso queira evitar cobranças na sua conta da Azure, remova todos os recursos provisionados pelo script quando não tiver mais uso, utilizando o comando:
 
 `terraform destroy`
+
+## AVISO!!
+Não esqueça de fazer as alterações no código de acordo com os comentários.
